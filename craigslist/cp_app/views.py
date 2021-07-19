@@ -19,9 +19,9 @@ def new_category(request):
             category = form.save(commit=False)
             category.save()
             return redirect('category_detail', category_id=category.id)
-        else:
-            form = CategoryForm()
-            return render(request, 'category_form.html', {'form': form, 'type': 'New'})
+    else:
+        form = CategoryForm()
+        return render(request, 'category_form.html', {'form': form, 'type': 'New'})
             
 def category_edit(request, category_id):
     category = Category.objects.get(id=category_id)
@@ -31,9 +31,9 @@ def category_edit(request, category_id):
             category = form.save(commit=False)
             category.save()
             return redirect('category_detail', category_id=category.id)
-        else:
-            form = CategoryForm(instance=category)
-            return render(request, 'category_form.html', {'form': form, 'type': 'Edit'})
+    else:
+        form = CategoryForm(instance=category)
+        return render(request, 'category_form.html', {'form': form, 'type': 'Edit'})
 
 def category_delete(request, category_id):
     if request.method == "POST":
@@ -54,24 +54,25 @@ def new_post(request, category_id):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
+            post.category = category
             post.save()
             return redirect('post_detail', category_id=category.id, post_id=post.id)
-        else:
-            form = PostForm(initial={'category': category})
-            return render(request, 'post_form.html', {'form': form, 'type': 'New', 'category': category})
+    else:
+        form = PostForm(initial={'category': category})
+        return render(request, 'post_form.html', {'form': form, 'type': 'New', 'category': category})
             
 def post_edit(request, category_id, post_id):
     category = Category.objects.get(id=category_id)
-    post = Post.objects.get(id=post_edit)
+    post = Post.objects.get(id=post_id)
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
             return redirect('post_detail', category_id=category.id, post_id=post.id)
-        else:
-            form = PostForm(instance=post)
-            return render(request, 'post_form.html', {'form': form, 'type': 'Edit', 'category': category})
+    else:
+        form = PostForm(instance=post)
+        return render(request, 'post_form.html', {'form': form, 'type': 'Edit', 'category': category})
             
 def post_delete(request, category_id, post_id):
     if request.method == "POST":

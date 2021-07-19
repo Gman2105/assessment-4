@@ -6,12 +6,12 @@ from .models       import Category, Post
 
 class CategoryForm(forms.ModelForm):
     class Meta:
-        name = Category
+        model = Category
         fields = ['name']
         
 
 class PostForm(forms.ModelForm):
     class Meta:
-        name = Post
+        model = Post
         fields = ['name', 'description']
         
